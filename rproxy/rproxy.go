@@ -1,25 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 	"time"
 )
 
-// NewMultipleHostReverseProxy creates a reverse proxy that will randomly
-// select a host from the passed `targets`
-func NewMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
+func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
 		println("CALLING DIRECTOR")
 		target := targets[rand.Int()%len(targets)]
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
 		req.URL.Path = target.Path
-		println(req.URL.Path)
+
 	}
 	return &httputil.ReverseProxy{
 		Director: director,
@@ -45,7 +45,8 @@ func NewMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 }
 
 func main() {
-	proxy := NewMultipleHostReverseProxy([]*url.URL{
+	fmt.Println(os.Getenv("rproxy"))
+	proxy := newMultipleHostReverseProxy([]*url.URL{
 		{
 			Scheme: "http",
 			Host:   "localhost:9091",
