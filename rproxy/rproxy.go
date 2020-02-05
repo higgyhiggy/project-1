@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -12,10 +11,14 @@ import (
 	"time"
 )
 
+var index = 1
+
 func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
 		println("CALLING DIRECTOR")
-		target := targets[rand.Int()%len(targets)]
+		//target := targets[rand.Int()%len(targets)]
+		target := targets[index%2]
+		index++
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
 		req.URL.Path = target.Path

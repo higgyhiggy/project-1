@@ -2,20 +2,20 @@
 Protect your Project 0! Develop your own networking programs to watch, modify, and route network traffic to your HTTP server apps. Functions may be implemented as one application binary, or as several binaries.
 
 ## Functions
-- [ ] Reverse Proxy
+- [x] Reverse Proxy
 - [ ] Firewall
 - [ ] Intrusion Detection System
 - [ ] Logging Manager
-- [ ] Load Balancer
+- [x] Load Balancer
 
 ## Requirements
 - [ ] Documentation
 - [ ] Agile Project Management
 - [ ] Unit Testing
 - [ ] Logs & Metrics
-- [ ] Environment Configuration
+- [x] Environment Configuration
 - [ ] Security
-- [ ] Build & Deploy Scripts
+- [x] Build & Deploy Scripts
 - [ ] Containerization
 
 ## Presentation
