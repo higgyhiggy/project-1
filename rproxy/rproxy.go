@@ -59,5 +59,5 @@ func main() {
 			Host:   "localhost:9092",
 		},
 	})
-	log.Fatal(http.ListenAndServe(":9090", proxy))
+	log.Fatal(http.ListenAndServeTLS(":9090", "server.crt", "server.key", proxy))
 }
