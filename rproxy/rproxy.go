@@ -11,10 +11,13 @@ import (
 	"time"
 )
 
+var PORT = "8000"
 var index = 1
+var Key = "higgyhiggy"
 
 func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
+		req.Header.Add("X-Secret-Key", Key)
 		//target is the host we will send the request to
 		// round robin load balancer
 		//target := targets[rand.Int()%len(targets)]
@@ -116,7 +119,7 @@ func main() {
 			Host:   "localhost:9092",
 		},
 	})
-	log.Fatal(http.ListenAndServeTLS(":9090", "server.crt", "server.key", proxy))
+	log.Fatal(http.ListenAndServeTLS(":"+PORT, "server.crt", "server.key", proxy))
 }
 func getIP(r *http.Request) string {
 	forwarded := r.Header.Get("X-FORWARDED-FOR")

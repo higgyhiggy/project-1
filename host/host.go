@@ -1,12 +1,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
+	"strconv"
 )
+
 var PORT string
+var Key = "higgyhiggy"
 
 // takes port number as imput we pick
 func main() {
@@ -15,20 +18,26 @@ func main() {
 	flag.Parse()
 	PORT = strconv.Itoa(port)
 
-
 	//prints out when we hit that port along with the path of it /yoyo/lol
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(w, "Hello wolrld")
+
+		remoteKey := req.Header.Get("X-Secret-Key")
+		if Key != remoteKey {
+			fmt.Println("Access Denied ", req.RemoteAddr)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Acess Denied"))
+			return
+		}
+		fmt.Println("New Connection ", req.RemoteAddr)
+
 		ua := req.Header.Get("User-Agent")
 		//tu := req.Header.Get("host")
 		println(getIP(req))
 		println(ua)
-		//println("--->", os.Args[1], req.URL.String(), "\n")
 		fmt.Printf("Server started on port %s\n", PORT)
 	})
-	// port that was passed via user that we will listen and server
-	//http.ListenAndServeTLS(":"+os.Args[1], "https-server.crt", "https-server.key", nil)
-	err := http.ListenAndServe(":"+os.Args[1], nil)
+
+	err := http.ListenAndServe(":"+PORT, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
