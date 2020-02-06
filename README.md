@@ -3,9 +3,9 @@ Protect your Project 0! Develop your own networking programs to watch, modify, a
 
 ## Functions
 - [x] Reverse Proxy
-- [ ] Firewall
+- [x] Firewall
 - [ ] Intrusion Detection System
-- [ ] Logging Manager
+- [x] Logging Manager
 - [x] Load Balancer
 
 ## Requirements

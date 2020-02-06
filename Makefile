@@ -2,8 +2,8 @@ all: hello run
 include .env
 
 hello:
-	echo "hello"
+	echo "makefile running"
 	echo $(portone)
 run:
-	echo " this is run"
+	echo "makefile running script to run both host and a rproxy server"
 	./yes.sh

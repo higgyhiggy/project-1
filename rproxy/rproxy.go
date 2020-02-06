@@ -13,11 +13,11 @@ import (
 
 var PORT = "8000"
 var index = 1
-var Key = "higgyhiggy"
+var yang = "higgyhiggy"
 
 func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
-		req.Header.Add("X-Secret-Key", Key)
+		req.Header.Add("ying", yang)
 		//target is the host we will send the request to
 		// round robin load balancer
 		//target := targets[rand.Int()%len(targets)]
@@ -37,7 +37,7 @@ func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
 		req.URL.Path = target.Path
-		println(getIP(req))
+		println(getIP(req) + "---> accessed rproxy server!!!")
 
 	}
 	/* // Director must be a function which modifies

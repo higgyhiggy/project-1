@@ -9,7 +9,7 @@ import (
 )
 
 var PORT string
-var Key = "higgyhiggy"
+var yang = "higgyhiggy"
 
 // takes port number as imput we pick
 func main() {
@@ -17,26 +17,25 @@ func main() {
 	flag.IntVar(&port, "p", 80, "specify port to use.  defaults to 8000.")
 	flag.Parse()
 	PORT = strconv.Itoa(port)
-
+	fmt.Printf("Host started on port %s\n", PORT)
 	//prints out when we hit that port along with the path of it /yoyo/lol
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 
-		remoteKey := req.Header.Get("X-Secret-Key")
-		if Key != remoteKey {
+		answer := req.Header.Get("ying")
+		if yang != answer {
 			fmt.Println("Access Denied ", req.RemoteAddr)
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Acess Denied"))
 			return
 		}
-		w.Write([]byte("Acess GRANTED!!!")
-		fmt.Println("New Connection ", req.RemoteAddr)
-
+		w.Write([]byte("Acess GRANTED!!!"))
+		fmt.Println(getIP(req), "---> requested this host ")
 
 		ua := req.Header.Get("User-Agent")
 		//tu := req.Header.Get("host")
-		println(getIP(req))
+
 		println(ua)
-		fmt.Printf("Server started on port %s\n", PORT)
+
 	})
 
 	err := http.ListenAndServe(":"+PORT, nil)
