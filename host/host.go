@@ -28,7 +28,9 @@ func main() {
 			w.Write([]byte("Acess Denied"))
 			return
 		}
+		w.Write([]byte("Acess GRANTED!!!")
 		fmt.Println("New Connection ", req.RemoteAddr)
+
 
 		ua := req.Header.Get("User-Agent")
 		//tu := req.Header.Get("host")
