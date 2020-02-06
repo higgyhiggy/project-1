@@ -14,7 +14,7 @@ Protect your Project 0! Develop your own networking programs to watch, modify, a
 - [ ] Unit Testing
 - [ ] Logs & Metrics
 - [x] Environment Configuration
-- [ ] Security
+- [x] Security
 - [x] Build & Deploy Scripts
 - [ ] Containerization
 
