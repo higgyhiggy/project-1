@@ -11,11 +11,13 @@ import (
 	"time"
 )
 
-var PORT = "8000"
+var PORT = "9093"
 var index = 1
 var yang = "higgyhiggy"
 
+//	REVERSE PROXY TO TAKE MULPLE URLS
 func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
+	//MACHIENS THAT GOT THROUGT THE PROXY GET A SPECIAL KEY SO THEY HAVE ACCESS TO BACK SERVER
 	director := func(req *http.Request) {
 		req.Header.Add("ying", yang)
 		//target is the host we will send the request to
@@ -34,10 +36,11 @@ func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 		    RawQuery   string    // encoded query values, without '?'
 		    Fragment   string    // fragment for references, without '#'
 		}*/
+		//JUST COPYING THE TARGET INFO TO OUR REQUEST FOR LATER USE IN THE REVERSEPROXY
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
 		req.URL.Path = target.Path
-		println(getIP(req) + "---> accessed rproxy server!!!")
+		println(getIP(req) + "---> when through rproxy server!!!")
 
 	}
 	/* // Director must be a function which modifies
@@ -108,19 +111,27 @@ func newMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 }
 
 func main() {
+	// SOME ENVIRONMENT VARIABLES FOR GREETING START
 	fmt.Println(os.Getenv("rproxy"))
+	// HAVE TWO CLIENT SET UP CAN ADD MORE IF DESIRED HERE
+	//THOSE GET PASSED TO MULTIPLE PROXY FOR LATER TO BE USED BY AND INDIVIDUAL PROXY FOR REDIRECTION
 	proxy := newMultipleHostReverseProxy([]*url.URL{
 		{
 			Scheme: "http",
 			Host:   "localhost:9091",
+			//Host:   "192.168.30.10:9091",
 		},
 		{
 			Scheme: "http",
 			Host:   "localhost:9092",
+			//Host:   "192.168.30.10:9091",
 		},
 	})
+	// LISTEN FOR ANYTHING ON PORT 9093 IF SO THEN ROUTE IT TO REVERSE PROXY
 	log.Fatal(http.ListenAndServeTLS(":"+PORT, "server.crt", "server.key", proxy))
 }
+
+// TO GET SOME LOGGIN INFORMATION FROM THER HEADER WHEN A SOME ONE IS MAKING A CONNECTION
 func getIP(r *http.Request) string {
 	forwarded := r.Header.Get("X-FORWARDED-FOR")
 	if forwarded != "" {
